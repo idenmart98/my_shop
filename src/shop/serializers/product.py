@@ -5,10 +5,16 @@ from shop.models import Product
 
 class ProductDetailSerializer(serializers.ModelSerializer):
     def update(self, instance, data):
-        instance = super(Product_detailsListSerializers, self).update(instance, data)
+        instance = super(ProductDetailSerializer, self).update(instance, data)
         instance.save()
         return instance
                     
     class Meta:
         model = Product
         exclude = ('id',)
+
+
+class ProductsListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Product
+        fields = '__all__'
