@@ -50,6 +50,7 @@ class Card(models.Model):
 class CardProduct(models.Model):
     product = models.ForeignKey(Product, related_name='card_product', on_delete=models.CASCADE)
     card = models.ForeignKey(Card, related_name='card_product', on_delete=models.CASCADE)
+    count = models.IntegerField()
     class Meta:
         verbose_name = 'Продукт в корзине'
         verbose_name_plural = 'Продукты в корзине'
