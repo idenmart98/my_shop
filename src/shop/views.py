@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from .models import Product,Category
-from .serializers.product import ProductDetailSerializer, ProductsListSerializer,CategoryListSerializers
+from .serializers.product import ProductDetailSerializer, ProductsListSerializer
+from .serializers.category import CategoryListSerializers
 from rest_framework.generics import ListAPIView, RetrieveUpdateDestroyAPIView
 # Create your views here.
 
