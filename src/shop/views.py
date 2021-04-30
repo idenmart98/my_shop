@@ -1,6 +1,7 @@
 from django.shortcuts import render
-from .models import Product
+from .models import Product,Category
 from .serializers.product import ProductDetailSerializer, ProductsListSerializer
+from .serializers.category import CategoryListSerializers
 from rest_framework.generics import ListAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
@@ -17,5 +18,12 @@ class ProductstListView(ListAPIView):
 
 class CategoryDetailView(ListAPIView):
     serializer_class = ProductsListSerializer
+    
     def get_queryset(self):
         return Product.objects.filter(category__id=self.kwargs['category_id'])
+
+class CategoryListView(ListAPIView):
+    serializer_class = CategoryListSerializers
+    queryset = Category.objects.all()    
+
+
