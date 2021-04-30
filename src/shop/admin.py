@@ -1,13 +1,17 @@
 from django.contrib import admin
-from .models import Product,Image
+from .models import Product,ProductImage
 
-# Register your models here.
 
+admin.site.register(ProductImage)
 admin.site.register(Product)
 
-class ImageInline(admin.TabularInline):
-    fk_name = 'product'
-    model = Image
+class ProductImageAdmin(admin.StackedInline):
+    model = ProductImage
+ 
 
-class TrouserAdmin(admin.ModelAdmin):
-    inlines = [ImageInline,]
+class ProductAdmin(admin.ModelAdmin):
+    inlines = [ProductImageAdmin]
+ 
+    class Meta:
+       model = Product
+ 
