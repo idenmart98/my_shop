@@ -3,10 +3,9 @@ from shop.models import Product
 
 
 
-class Product_detailsListSerializers(serializers.ModelSerializer):
+class ProductDetailSerializer(serializers.ModelSerializer):
     def update(self, instance, data):
         instance = super(Product_detailsListSerializers, self).update(instance, data)
-
         instance.save()
         return instance
                     
