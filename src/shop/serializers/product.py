@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from shop.models import Product,Category
+from shop.models import Product
 
 
 
