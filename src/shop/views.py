@@ -1,10 +1,14 @@
+import requests
 from django.shortcuts import render
-from .models import Product,Category
+from .models import Product,Category, Review
 from .serializers.product import ProductDetailSerializer, ProductsListSerializer
 from .serializers.category import CategoryListSerializers
-from rest_framework.generics import ListAPIView, RetrieveUpdateDestroyAPIView
+from .serializers.review import ReviewCreateSerializer
+from rest_framework.generics import ListAPIView, RetrieveUpdateDestroyAPIView, CreateAPIView
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
+from django.conf import settings
+
 
 class ProductDetailView(RetrieveUpdateDestroyAPIView):
     serializer_class = ProductDetailSerializer
@@ -25,5 +29,15 @@ class CategoryDetailView(ListAPIView):
 class CategoryListView(ListAPIView):
     serializer_class = CategoryListSerializers
     queryset = Category.objects.all()    
+
+class ReviewCreateView(CreateAPIView):
+    serializer_class = ReviewCreateSerializer
+    queryset = Review.objects.all()
+    
+    def create(self, request):
+        customer_name = request.POST.get('customer_name')
+        description = request.POST.get('description')
+        res = requests.get(settings.URL+f'{customer_name}\n{description}')
+        return Response(res)
 
 
