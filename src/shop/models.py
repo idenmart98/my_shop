@@ -1,5 +1,4 @@
 from django.db import models
-
 # Create your models here.
 
 class Category(models.Model):
@@ -66,7 +65,15 @@ class CardProduct(models.Model):
         verbose_name = 'Продукт в корзине'
         verbose_name_plural = 'Продукты в корзине'
     
+class Review(models.Model):
+    customer_name = models.CharField(max_length=300, verbose_name='Имя')
+    description = models.TextField(max_length = 1000, verbose_name='Описание')
+    phone_number = models.CharField(max_length=12, verbose_name='Номер телефона')
+    created = models.DateTimeField(auto_now_add=True)  
 
-
+    def __str__(self):
+        return f"{self.customer_name}"
+    class Meta:
+        verbose_name = 'Отзыв'
+        verbose_name_plural = 'Отзывы'
  
-
