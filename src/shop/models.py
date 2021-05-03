@@ -39,8 +39,17 @@ class ProductImage(models.Model):
         verbose_name_plural = 'Фото'
 
 class Card(models.Model):
+    STATUS_CHOICES = (
+        ('created', 'Created'), 
+        ('progress', 'Progress'),
+        ('finished', 'Finished'),
+        ('canceled', 'Canceled') 
+    ) 
     costummer = models.CharField(max_length=30, verbose_name='владелец')
     number = models.CharField(max_length=20, verbose_name='номер владельца')
+    status = models.CharField(max_length=10, 
+                              choices=STATUS_CHOICES, 
+                              default='created')
     def __str__(self):
         return f"{self.costummer}"
     class Meta:
