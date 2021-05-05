@@ -38,17 +38,9 @@ class ProductImage(models.Model):
         verbose_name_plural = 'Фото'
 
 class Card(models.Model):
-    STATUS_CHOICES = (
-        ('created', 'Created'), 
-        ('progress', 'Progress'),
-        ('finished', 'Finished'),
-        ('canceled', 'Canceled') 
-    ) 
     costummer = models.CharField(max_length=30, verbose_name='владелец')
     number = models.CharField(max_length=20, verbose_name='номер владельца')
-    status = models.CharField(max_length=10, 
-                              choices=STATUS_CHOICES, 
-                              default='created')
+    created = models.DateTimeField(auto_now_add=True) 
     def __str__(self):
         return f"{self.costummer}"
     class Meta:
@@ -59,6 +51,7 @@ class CardProduct(models.Model):
     product = models.ForeignKey(Product, related_name='card_product', on_delete=models.CASCADE)
     card = models.ForeignKey(Card, related_name='card_product', on_delete=models.CASCADE)
     count = models.IntegerField()
+
     def __str__(self):
         return f"{self.product}"
     class Meta:
