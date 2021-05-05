@@ -46,7 +46,7 @@ class ReviewCreateView(CreateAPIView):
 
 
 @api_view(["GET", "POST"])
-def cardproducts_finished(request):
+def statistics(request):
     cardproduct_finished = CardProduct.objects.filter(card__status='finished')
     cardproduct_finished_count = cardproduct_finished.values_list(
         'count', flat=True)

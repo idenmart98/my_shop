@@ -57,3 +57,8 @@ coverage.xml
 
 # Sphinx documentation
 docs/_build/
+
+
+**/migrations/**
+!**/migrations
+!**/migrations/__init__.py
