@@ -1,12 +1,15 @@
 import requests
 from django.shortcuts import render
-from .models import Product, Category, Review, Card, CardProduct
-from .serializers.product import ProductDetailSerializer, ProductsListSerializer
+
+from .models import Product, Category, Review, Card, CardProduct, ProductImage
+from .serializers.product import ProductDetailSerializer, ProductsListSerializer, ProductImagesSerializer
+
 from .serializers.category import CategoryListSerializers
 from .serializers.review import ReviewCreateSerializer
 from rest_framework.generics import ListAPIView, RetrieveUpdateDestroyAPIView, CreateAPIView
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
+from rest_framework import status
 from django.conf import settings
 
 
@@ -42,7 +45,13 @@ class ReviewCreateView(CreateAPIView):
         customer_name = request.POST.get('customer_name')
         description = request.POST.get('description')
         res = requests.get(settings.URL+f'{customer_name}\n{description}')
-        return Response(res)
+        
+        return Response({
+            "success": True,
+            "data": "Review created"},
+            status.HTTP_201_CREATED
+        )
+
 
 
 @api_view(["GET", "POST"])
