@@ -42,7 +42,7 @@ class ReviewCreateView(CreateAPIView):
         
         return Response({
             "success": True,
-            "data": "User created"},
+            "data": "Review created"},
             status.HTTP_201_CREATED
         )
 
