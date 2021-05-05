@@ -1,7 +1,8 @@
 import requests
 from django.shortcuts import render
-from .models import Product,Category, Review
-from .serializers.product import ProductDetailSerializer, ProductsListSerializer
+
+from .models import Product,Category, ProductImage, Review
+from .serializers.product import ProductDetailSerializer, ProductsListSerializer, ProductImagesSerializer
 from .serializers.category import CategoryListSerializers
 from .serializers.review import ReviewCreateSerializer
 from rest_framework.generics import ListAPIView, RetrieveUpdateDestroyAPIView, CreateAPIView
@@ -45,5 +46,6 @@ class ReviewCreateView(CreateAPIView):
             "data": "Review created"},
             status.HTTP_201_CREATED
         )
+
 
 
