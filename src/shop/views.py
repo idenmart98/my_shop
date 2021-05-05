@@ -1,6 +1,6 @@
 import requests
 from django.shortcuts import render
-from .models import Product, Category, Review,Card,CardProduct
+from .models import Product, Category, Review, Card, CardProduct
 from .serializers.product import ProductDetailSerializer, ProductsListSerializer
 from .serializers.category import CategoryListSerializers
 from .serializers.review import ReviewCreateSerializer
@@ -46,11 +46,10 @@ class ReviewCreateView(CreateAPIView):
 
 
 @api_view(["GET", "POST"])
-def unsold_products(request):
-    sold = Card.objects.filter(status='finished')
-    count = CardProduct.objects.values_list('count', flat=True)
-    sold_products = len(sold)
-    all_products = sum(count)
-    unsold_products = all_products-sold_products
+def cardproducts_finished(request):
+    cardproduct_finished = CardProduct.objects.filter(card__status='finished')
+    cardproduct_finished_count = cardproduct_finished.values_list(
+        'count', flat=True)
+    cardproduct_finished_count_summ = sum(cardproduct_finished_count)
 
-    return Response({"unsold_products": unsold_products})
+    return Response({"cardproduct_finished_count_summ": cardproduct_finished_count_summ})
