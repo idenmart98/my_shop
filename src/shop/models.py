@@ -20,6 +20,7 @@ class Product(models.Model):
     description = models.TextField(max_length = 1000, verbose_name = 'Описание')
     category = models.ForeignKey(Category, related_name='product', on_delete=models.CASCADE)
 
+
     class Meta:
         ordering = ('name',)
         verbose_name = 'Продукт'
