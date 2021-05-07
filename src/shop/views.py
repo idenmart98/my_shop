@@ -37,6 +37,37 @@ class CategoryListView(ListAPIView):
     queryset = Category.objects.all()
 
 
+class CartCreateView(CreateAPIView):
+    serializer_class = CartSerializer
+
+    def create(self, request):
+        customer = request.data['customer']
+        number = request.data['number']
+        products = request.data['products']
+        
+        print(customer, number, products)
+
+        card = Card.objects.create(
+            costummer = customer,
+            number = number,
+        )
+        card.save()
+
+        for product in products:
+            product_created = CardProduct.objects.create(
+                product = Product.objects.get(id = product['id']),
+                card =  Card.objects.get(id = card.id),
+                count = product["count"]
+            )
+            product_created.save()
+            
+
+        return Response({
+            'success': True,
+            'data': 'Cart created'},
+            status.HTTP_201_CREATED
+        )
+
 class ReviewCreateView(CreateAPIView):
     serializer_class = ReviewCreateSerializer
     queryset = Review.objects.all()
