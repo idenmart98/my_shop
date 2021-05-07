@@ -3,6 +3,7 @@ from django.shortcuts import render
 
 from .models import Product, Category, Review, Cart, CartProduct, ProductImage
 from .serializers.product import ProductDetailSerializer, ProductsListSerializer, ProductImagesSerializer
+from .serializers.cart import CartSerializer
 
 from .serializers.category import CategoryListSerializers
 from .serializers.review import ReviewCreateSerializer

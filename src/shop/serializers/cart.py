@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from shop.models import Card, CardProduct
+from shop.models import Cart, CartProduct
 
 
 class ProductSerializer(serializers.Serializer):
@@ -7,7 +7,7 @@ class ProductSerializer(serializers.Serializer):
     count = serializers.IntegerField()
 
     class Meta:
-        model = Card
+        model = Cart
         fields = '__all__'
 
 
@@ -17,5 +17,5 @@ class CartSerializer(serializers.Serializer):
     products = ProductSerializer(many=True)
 
     class Meta:
-        model = Card
+        model = Cart
         fields = '__all__'
