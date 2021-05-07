@@ -1,5 +1,4 @@
 from django.db import models
-
 # Create your models here.
 
 
@@ -25,6 +24,7 @@ class Product(models.Model):
     category = models.ForeignKey(
         Category, related_name='product', on_delete=models.CASCADE)
 
+
     class Meta:
         ordering = ('name',)
         verbose_name = 'Продукт'
@@ -43,24 +43,27 @@ class ProductImage(models.Model):
         verbose_name = 'Фото'
         verbose_name_plural = 'Фото'
 
-
-class Card(models.Model):
-    costummer = models.CharField(max_length=30, verbose_name='владелец')
+class Cart(models.Model):
+    STATUS_CHOICES = (
+        ('created', 'Created'), 
+        ('progress', 'Progress'),
+        ('finished', 'Finished'),
+        ('canceled', 'Canceled') 
+    ) 
+    customer = models.CharField(max_length=30, verbose_name='владелец')
     number = models.CharField(max_length=20, verbose_name='номер владельца')
-
+    status = models.CharField(max_length=10, 
+                              choices=STATUS_CHOICES, 
+                              default='created')
     def __str__(self):
-        return f"{self.costummer}"
-
+        return f"{self.customer}"
     class Meta:
         verbose_name = 'Корзина'
         verbose_name_plural = 'Корзины'
 
-
-class CardProduct(models.Model):
-    product = models.ForeignKey(
-        Product, related_name='card_product', on_delete=models.CASCADE)
-    card = models.ForeignKey(
-        Card, related_name='card_product', on_delete=models.CASCADE)
+class CartProduct(models.Model):
+    product = models.ForeignKey(Product, related_name='cart_product', on_delete=models.CASCADE)
+    cart = models.ForeignKey(Cart, related_name='cart_product', on_delete=models.CASCADE)
     count = models.IntegerField()
 
     def __str__(self):
@@ -69,3 +72,16 @@ class CardProduct(models.Model):
     class Meta:
         verbose_name = 'Продукт в корзине'
         verbose_name_plural = 'Продукты в корзине'
+    
+class Review(models.Model):
+    customer_name = models.CharField(max_length=300, verbose_name='Имя')
+    description = models.TextField(max_length = 1000, verbose_name='Описание')
+    phone_number = models.CharField(max_length=12, verbose_name='Номер телефона')
+    created = models.DateTimeField(auto_now_add=True)  
+
+    def __str__(self):
+        return f"{self.customer_name}"
+    class Meta:
+        verbose_name = 'Отзыв'
+        verbose_name_plural = 'Отзывы'
+ 
