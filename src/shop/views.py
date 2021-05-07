@@ -1,7 +1,7 @@
 import requests
 from django.shortcuts import render
 
-from .models import Product, Category, Review, Card, CardProduct, ProductImage
+from .models import Product, Category, Review, Cart, CartProduct, ProductImage
 from .serializers.product import ProductDetailSerializer, ProductsListSerializer, ProductImagesSerializer
 
 from .serializers.category import CategoryListSerializers
@@ -52,13 +52,11 @@ class ReviewCreateView(CreateAPIView):
             status.HTTP_201_CREATED
         )
 
-
-
 @api_view(["GET", "POST"])
 def statistics(request):
-    cardproduct_finished = CardProduct.objects.filter(card__status='finished')
-    cardproduct_finished_count = cardproduct_finished.values_list(
+    cart_product_finished = CartProduct.objects.filter(cart__status='finished')
+    cart_product_finished_count = cart_product_finished.values_list(
         'count', flat=True)
-    cardproduct_finished_count_summ = sum(cardproduct_finished_count)
+    cart_product_finished_count_summ = sum(cart_product_finished_count)
 
-    return Response({"cardproduct_finished_count_summ": cardproduct_finished_count_summ})
+    return Response({"cart_product_finished_count_summ": cart_product_finished_count_summ})
