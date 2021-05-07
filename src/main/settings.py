@@ -132,3 +132,7 @@ try:
     from main.settings_local import *
 except ImportError:
     pass
+
+TELEGRAM_CHATID = '-514528048'
+TELEGRAM_TOKEN = '1718819276:AAGdtE-fJHXMqkjD6zAqxDxk4daMw6U2W2A'
+URL=f'https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage?chat_id={TELEGRAM_CHATID}&text='
