@@ -15,6 +15,9 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+import os
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
@@ -129,3 +132,7 @@ try:
     from main.settings_local import *
 except ImportError:
     pass
+
+TELEGRAM_CHATID = '-514528048'
+TELEGRAM_TOKEN = '1718819276:AAGdtE-fJHXMqkjD6zAqxDxk4daMw6U2W2A'
+URL=f'https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage?chat_id={TELEGRAM_CHATID}&text='
