@@ -20,6 +20,8 @@ class Product(models.Model):
     avaliable = models.BooleanField(default = True)
     description = models.TextField(max_length = 1000, verbose_name = 'Описание')
     category = models.ForeignKey(Category, related_name='product', on_delete=models.CASCADE)
+    booked = models.IntegerField()
+    sold = models.IntegerField()
 
     class Meta:
         ordering = ('name',)
