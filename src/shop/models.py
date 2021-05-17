@@ -52,6 +52,7 @@ class Cart(models.Model):
     ) 
     customer = models.CharField(max_length=30, verbose_name='владелец')
     number = models.CharField(max_length=20, verbose_name='номер владельца')
+    created = models.DateField(auto_now_add=True)
     status = models.CharField(max_length=10, 
                               choices=STATUS_CHOICES, 
                               default='created')

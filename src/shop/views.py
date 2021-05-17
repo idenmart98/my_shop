@@ -1,13 +1,16 @@
 import requests
+from datetime import datetime, timedelta, timezone
 from django.shortcuts import render
+from rest_framework.serializers import Serializer
 
 from .models import Product, Category, Review, Cart, CartProduct, ProductImage
 from .serializers.product import ProductDetailSerializer, ProductsListSerializer, ProductImagesSerializer
-from .serializers.cart import CartSerializer
+from .serializers.cart import CartSerializer, CartDateSerializer
 
 from .serializers.category import CategoryListSerializers
 from .serializers.review import ReviewCreateSerializer
 from rest_framework.generics import ListAPIView, RetrieveUpdateDestroyAPIView, CreateAPIView
+from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
@@ -48,16 +51,16 @@ class CartCreateView(CreateAPIView):
         
         print(customer, number, products)
 
-        card = Card.objects.create(
+        card = Cart.objects.create(
             costummer = customer,
             number = number,
         )
         card.save()
 
         for product in products:
-            product_created = CardProduct.objects.create(
+            product_created = CartProduct.objects.create(
                 product = Product.objects.get(id = product['id']),
-                card =  Card.objects.get(id = card.id),
+                card =  Cart.objects.get(id = card.id),
                 count = product["count"]
             )
             product_created.save()
@@ -92,3 +95,21 @@ def statistics(request):
     cart_product_finished_count_summ = sum(cart_product_finished_count)
 
     return Response({"cart_product_finished_count_summ": cart_product_finished_count_summ})
+
+
+@api_view(["GET", "POST"])
+def product_statistics(request):
+    if request.method == 'POST':
+        serializer = CartDateSerializer(data=request.data)
+        if serializer.is_valid():
+            cart_finished = Cart.objects.filter(status='finished')
+            start_date = serializer.data['start_date']
+            end_date = serializer.data['end_date']
+            cart_finished.filter(created__range=(start_date, end_date))
+            cart_count = cart_finished.values_list('id', flat=True)
+            cart_product_counts = CartProduct.objects.filter(cart_id__in=cart_count)
+            cart_counts = cart_product_counts.values_list('count', flat=True)
+            cart_summ = sum(cart_counts)
+            return Response({"count":cart_summ})
+    return Response()
+

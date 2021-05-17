@@ -19,3 +19,11 @@ class CartSerializer(serializers.Serializer):
     class Meta:
         model = Cart
         fields = '__all__'
+
+class CartDateSerializer(serializers.Serializer):
+    start_date = serializers.DateField(format="%Y-%m-%d")
+    end_date = serializers.DateField(format="%Y-%m-%d")
+
+    class Meta:
+        model = Cart
+        fields = '__all__'
