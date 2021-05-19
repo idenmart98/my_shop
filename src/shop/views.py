@@ -43,34 +43,36 @@ class CategoryListView(ListAPIView):
 
 class CartCreateView(CreateAPIView):
     serializer_class = CartSerializer
-    
+
     def create(self, request):
         customer = request.data['customer']
         number = request.data['number']
         products = request.data['products']
-        print(customer, number, products)
 
         cart = Cart.objects.create(
-            customer = customer,
-            number = number,
+            customer=customer,
+            number=number,
         )
         cart.save()
-        
+
         products_message = ''
         for product in products:
-            a = Product.objects.get(id = product['id'])
-            products_message = products_message + f'{a.name}, {product["count"]}шт' + '\n'
-        res = requests.get(settings.URL+f'{customer}\n{number}\n{products_message}')
+            a = Product.objects.get(id=product['id'])
+            products_message = products_message + \
+                f'{a.name}, {product["count"]}шт' + '\n'
+        res = requests.get(
+            settings.URL+f'{customer}\n{number}\n{products_message}')
 
         for product in products:
             product_created = CartProduct.objects.create(
-                product = Product.objects.get(id = product['id']),
-                cart =  Cart.objects.get(id = cart.id),
-                count = product["count"]
-             )
-            product_created.save()
+                product=Product.objects.get(id=product['id']),
+                cart=Cart.objects.get(id=cart.id),
+                count=product["count"]
+            )
 
+            product_created.save()
             a = product_created.product
+            a.booked += product["count"]
             a.count -= product["count"]
             a.save()
         return Response({
@@ -78,7 +80,7 @@ class CartCreateView(CreateAPIView):
             'data': 'Cart created'},
             status.HTTP_201_CREATED
         )
-      
+
 
 class ReviewCreateView(CreateAPIView):
     serializer_class = ReviewCreateSerializer
@@ -88,12 +90,13 @@ class ReviewCreateView(CreateAPIView):
         customer_name = request.POST.get('customer_name')
         description = request.POST.get('description')
         res = requests.get(settings.URL+f'{customer_name}\n{description}')
-        
+
         return Response({
             "success": True,
             "data": "Review created"},
             status.HTTP_201_CREATED
         )
+
 
 @api_view(["GET", "POST"])
 def statistics(request):
