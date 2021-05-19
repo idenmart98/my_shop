@@ -19,11 +19,12 @@ class Product(models.Model):
     price = models.DecimalField(
         max_digits=7, decimal_places=0, verbose_name='Цена')
     count = models.IntegerField()
-    avaliable = models.BooleanField(default=True)
-    description = models.TextField(max_length=1000, verbose_name='Описание')
-    category = models.ForeignKey(
-        Category, related_name='product', on_delete=models.CASCADE)
 
+    avaliable = models.BooleanField(default = True)
+    description = models.TextField(max_length = 1000, verbose_name = 'Описание')
+    category = models.ForeignKey(Category, related_name='product', on_delete=models.CASCADE)
+    booked = models.IntegerField(default = 0)
+    sold = models.IntegerField(default = 0)
 
     class Meta:
         ordering = ('name',)
